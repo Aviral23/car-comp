@@ -13,7 +13,7 @@ The Car Comparison System is a Spring Boot-based application that allows users t
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Aviral23/car-comp.git
+   git clone https://github.com/Aviral23/car-comp.git 
 2. **Run the project:**
     ```bash
     ./mvnw clean package
