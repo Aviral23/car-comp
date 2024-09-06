@@ -7,13 +7,12 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootApplication
-public class CarApplication extends SpringBootServletInitializer {
+public class CarCompareApplication extends SpringBootServletInitializer {
 
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	public static void main(String[] args) {
-		System.setProperty("spring.profiles.active","dev");
-		SpringApplication.run(CarApplication.class, args);
+		SpringApplication.run(CarCompareApplication.class, args);
 	}
 
 }

@@ -1,12 +1,10 @@
 package com.intuit.monitoring;
 
-import com.intuit.monitoring.DataDogEntity;
-import com.intuit.monitoring.DataDogExceptionEntity;
 import com.timgroup.statsd.NoOpStatsDClient;
 import com.timgroup.statsd.NonBlockingStatsDClient;
-import org.springframework.beans.factory.annotation.Value;
 import com.timgroup.statsd.StatsDClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 

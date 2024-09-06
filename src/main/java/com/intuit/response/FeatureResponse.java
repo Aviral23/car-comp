@@ -9,6 +9,6 @@ import java.util.List;
 @Builder
 public class FeatureResponse {
     private String name;
-    private List<String> values;
+    private List<Boolean> values;
     private boolean isCommonValue;
 }

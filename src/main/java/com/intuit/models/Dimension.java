@@ -10,5 +10,9 @@ public class Dimension implements Serializable {
     private double width;
     private double height;
 
-
+    public Dimension(double length, double width, double height) {
+        this.length = length;
+        this.width = width;
+        this.height = height;
+    }
 }

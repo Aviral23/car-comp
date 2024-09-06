@@ -6,8 +6,8 @@ import com.intuit.exception.ValidationException;
 import com.intuit.request.CompareRequest;
 import com.intuit.response.CarResponse;
 import com.intuit.response.ComparisonList;
-import com.intuit.service.ComparisonLogic;
 import com.intuit.service.CarService;
+import com.intuit.service.ComparisonLogic;
 import com.intuit.service.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class ControllerTest {
     private RedisService redisService;
 
     @InjectMocks
-    private Controller controller;
+    private CarController controller;
 
 
     @Test

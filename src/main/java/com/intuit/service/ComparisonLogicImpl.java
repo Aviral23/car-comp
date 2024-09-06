@@ -1,11 +1,13 @@
 package com.intuit.service;
 
 import com.intuit.exception.ValidationException;
-import com.intuit.models.*;
+import com.intuit.models.Car;
+import com.intuit.models.Feature;
+import com.intuit.models.Specifications;
 import com.intuit.repository.CarRepository;
 import com.intuit.request.CompareRequest;
-import com.intuit.response.ComparisonResponse;
 import com.intuit.response.ComparisonList;
+import com.intuit.response.ComparisonResponse;
 import com.intuit.validator.RequestValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-
-import static com.intuit.utils.Constants.CAR_KEY_PREFIX;
 
 @Service
 public class ComparisonLogicImpl implements ComparisonLogic {
@@ -68,12 +68,12 @@ public class ComparisonLogicImpl implements ComparisonLogic {
             CompletableFuture<ComparisonResponse> featureComparisonFuture = CompletableFuture.supplyAsync(() ->
                     featureComparator.compareFeatures(firstCarFeatures, features), executorService
             );
-            CompletableFuture<ComparisonResponse> specificationsComparisonFuture = CompletableFuture.supplyAsync(() ->
+            /*CompletableFuture<ComparisonResponse> specificationsComparisonFuture = CompletableFuture.supplyAsync(() ->
                     specificationsComparator.compareSpecifications(firstCarSpecifications, specifications), executorService
-            );
+            );*/
 
             comparisonResponses.add(featureComparisonFuture.get());
-            comparisonResponses.add(specificationsComparisonFuture.get());
+//            comparisonResponses.add(specificationsComparisonFuture.get());
             ComparisonList comparisonList = new ComparisonList();
             comparisonList.setComparisonResponses(comparisonResponses);
             return comparisonList;
@@ -93,11 +93,9 @@ public class ComparisonLogicImpl implements ComparisonLogic {
         }catch (Exception ex){
             LOGGER.error("Exception while fetching from redis");
         }
-        if(car == null){
-            LOGGER.info("Fetching from database");
-            Optional<Car> optionalCar = carRepository.findById(id);
-            car = optionalCar.orElseThrow(() -> new ValidationException("Car not found with ID: " + id));
-        }
+        LOGGER.info("Fetching from database");
+        Optional<Car> optionalCar = Optional.ofNullable(carRepository.findById(id));
+        car = optionalCar.orElseThrow(() -> new ValidationException("Car not found with ID: " + id));
         try {
             redisService.putCarToCache(id, car);
         }

@@ -2,6 +2,7 @@ package com.intuit.service;
 
 import com.intuit.exception.ValidationException;
 import com.intuit.models.Car;
+import com.intuit.repository.CarRepository;
 import com.intuit.response.CarResponse;
 import com.intuit.validator.RequestValidator;
 import org.slf4j.Logger;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.intuit.repository.CarRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ public class CarServiceImpl implements CarService {
         this.requestValidator = requestValidator;
     }
 
-    public List<CarResponse> getCarsByTypeAndPrice(String type, double price) {
+    public List<CarResponse> getCarsByTypeAndPrice(String type, Double price) {
         Sort sort = Sort.by(Sort.Direction.DESC, "price");
         Pageable pageable = PageRequest.of(0, 11, sort);
 
@@ -43,12 +43,32 @@ public class CarServiceImpl implements CarService {
                     .collect(Collectors.toList());
         }
         catch (ValidationException validationException){
-            LOGGER.error("No cars found for type and price: {}", validationException.getMessage());
+            LOGGER.error("No cars found for this search: {}", validationException.getMessage());
             throw validationException;
         }
         catch (Exception e) {
             LOGGER.error("Error while fetching cars by type and price: {}", e.getMessage());
             throw e;
         }
+    }
+
+    @Override
+    public CarResponse getCarById(String id) {
+        Car car = null;
+        List<CarResponse> similarCarResponse = null;
+        try {
+            car = carRepository.findById(id);
+            similarCarResponse = carRepository.getTop10SimilarCars(car).stream()
+                    .map(CarResponse::fromCar)
+                    .collect(Collectors.toList());
+
+//            requestValidator.validateIfCarsExist(car);//TODO
+        } catch (ValidationException v) {
+            LOGGER.error("No car found for the given id: {}", v.getMessage());
+            throw v;
+        }
+        CarResponse carResponse = CarResponse.fromCar(car);
+        carResponse.setSimilarCars(similarCarResponse);
+        return carResponse;
     }
 }

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import static com.intuit.utils.Constants.CAR_KEY_PREFIX;
-
 @Service
 public class RedisService {
 

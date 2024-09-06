@@ -23,7 +23,7 @@ public class RequestValidator {
 
     public void validateIfCarsExist(List<Car> cars) {
         if(cars == null) {
-            throw new ValidationException("No cars found for particular type and price");
+            throw new ValidationException("No cars found for this particular search query");
         }
     }
 }
