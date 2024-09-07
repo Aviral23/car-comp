@@ -1,15 +1,20 @@
 package com.intuit.models;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class Car implements Serializable {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     private String make;
     private String model;
     private String name;
@@ -18,11 +23,10 @@ public class Car implements Serializable {
     private Feature features;
     private Specifications specifications;
     private List<Image> images;
-    private double price;
+    private BigDecimal price;
     private String type;
 
-    public Car(String id, String make, String model, int manufactureYear, String color, Feature features, Specifications specifications, List<Image> images, double price, String type) {
-        this.id = id;
+    public Car(String make, String model, int manufactureYear, String color, Feature features, Specifications specifications, List<Image> images, BigDecimal price, String type) {
         this.make = make;
         this.model = model;
         this.manufactureYear = manufactureYear;

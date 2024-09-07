@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,25 +36,22 @@ public class ComparisonLogicImpl implements ComparisonLogic {
 
     private final RedisService redisService;
 
-    private final ExecutorService executorService;
-
     @Autowired
     public ComparisonLogicImpl(CarRepository carRepository, FeatureComparator featureComparator,
-                               SpecificationsComparator specificationsComparator, RequestValidator requestValidator, RedisService redisService,@Value("${comparator.thread.pool:1}") int threadPoolSize) {
+                               SpecificationsComparator specificationsComparator, RequestValidator requestValidator, RedisService redisService) {
         this.carRepository = carRepository;
         this.featureComparator = featureComparator;
         this.specificationsComparator = specificationsComparator;
         this.requestValidator = requestValidator;
         this.redisService = redisService;
-        this.executorService = Executors.newFixedThreadPool(threadPoolSize);
 
     }
 
     @Override
-    public ComparisonList compare(CompareRequest compareRequest) {
+    public ComparisonList compareCars(CompareRequest compareRequest) {
         requestValidator.validateCompareRequest(compareRequest);
         try {
-            Car firstCar = getCarById(compareRequest.getViewingCarId());
+            Car firstCar = getCarById(compareRequest.getPresentCarId());
             Feature firstCarFeatures = firstCar.getFeatures();
             Specifications firstCarSpecifications = firstCar.getSpecifications();
 
@@ -64,16 +62,12 @@ public class ComparisonLogicImpl implements ComparisonLogic {
 
             List<ComparisonResponse> comparisonResponses = new ArrayList<>();
 
+            ComparisonResponse featureComparison = featureComparator.compareFeatures(firstCarFeatures, features);
+            ComparisonResponse specificationsComparison =
+                    specificationsComparator.compareSpecifications(firstCarSpecifications, specifications);
 
-            CompletableFuture<ComparisonResponse> featureComparisonFuture = CompletableFuture.supplyAsync(() ->
-                    featureComparator.compareFeatures(firstCarFeatures, features), executorService
-            );
-            /*CompletableFuture<ComparisonResponse> specificationsComparisonFuture = CompletableFuture.supplyAsync(() ->
-                    specificationsComparator.compareSpecifications(firstCarSpecifications, specifications), executorService
-            );*/
-
-            comparisonResponses.add(featureComparisonFuture.get());
-//            comparisonResponses.add(specificationsComparisonFuture.get());
+            comparisonResponses.add(featureComparison);
+            comparisonResponses.add(specificationsComparison);
             ComparisonList comparisonList = new ComparisonList();
             comparisonList.setComparisonResponses(comparisonResponses);
             return comparisonList;
@@ -86,7 +80,7 @@ public class ComparisonLogicImpl implements ComparisonLogic {
         }
     }
 
-    private Car getCarById(String id) {
+    private Car getCarById(UUID id) {
         Car car = null;
         try {
             redisService.getCachedCar(id);
@@ -94,8 +88,10 @@ public class ComparisonLogicImpl implements ComparisonLogic {
             LOGGER.error("Exception while fetching from redis");
         }
         LOGGER.info("Fetching from database");
-        Optional<Car> optionalCar = Optional.ofNullable(carRepository.findById(id));
-        car = optionalCar.orElseThrow(() -> new ValidationException("Car not found with ID: " + id));
+        Optional<Car> optionalCar = carRepository.findById(id);
+        if(optionalCar == null || !optionalCar.isPresent())
+            throw new ValidationException("Car not found with ID: " + id);
+        car = optionalCar.get();
         try {
             redisService.putCarToCache(id, car);
         }
@@ -107,9 +103,9 @@ public class ComparisonLogicImpl implements ComparisonLogic {
     }
 
 
-    private List<Car> getListOfCars(List<String> carIds) {
+    private List<Car> getListOfCars(List<UUID> carIds) {
         List<Car> list = new ArrayList<>();
-        for (String id : carIds) {
+        for (UUID id : carIds) {
             list.add(getCarById(id));
         }
         return list;

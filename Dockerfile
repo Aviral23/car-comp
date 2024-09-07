@@ -1,5 +1,5 @@
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-alpine
+FROM amazoncorretto:17-alpine-jdk
 
 ################################################### Install Maven ###################################################
 # Below apk command will install latest maven which may not be ideal for production systems (There are pros and cons both to use latest version of any artifacts, and you may decide based on your use case)

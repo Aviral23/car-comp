@@ -4,6 +4,7 @@ import com.intuit.models.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -13,7 +14,7 @@ public class CarConfiguration {
     public HashMap<String, Car> carHashMap() {
         HashMap<String, Car> carMap = new HashMap<>();
 
-        Random random = new Random();
+        /*Random random = new Random();
         List<Image> images;
         for (int i = 1; i <= 80; i++) {
             String id = String.format("%04d", i);
@@ -28,7 +29,7 @@ public class CarConfiguration {
             Image image1 = new Image("https://car-images.com/1/" + make + "/" + model);
             Image image2 = new Image("https://car-images.com/2/" + make + "/" + model);
             images = new ArrayList<>(Arrays.asList(image1, image2));
-            double price = 10000 + random.nextInt(50000);
+            BigDecimal price = new BigDecimal("10000");
             String type = generateRandomType(random);
 
             Car car = new Car(id, make, model, year, color, features, specifications, images, price, type);
@@ -39,7 +40,7 @@ public class CarConfiguration {
         carMap.forEach((key, car) -> {
             System.out.println("Key: " + key);
             System.out.println("Value: " + car.toString());
-        });
+        });*/
         return carMap;
     }
 
@@ -83,17 +84,14 @@ public class CarConfiguration {
 
     private static Specifications generateRandomSpec(Random random) {
         int numberOfSeats = random.nextInt(7) + 2; // generate a random number of seats between 2 and 8
-        Safety safety = generateRandomSafety(random);
         int warrantyYears = 2 + random.nextInt(4); // generate a random warranty period between 2 and 5 years
+        int numberOfAirbags = random.nextInt(5);
         String engineHP = generateRandomEngineHP(random);
         String variant = generateRandomVariant(random);
-        return new Specifications(numberOfSeats, safety, warrantyYears, engineHP, variant);
-    }
-
-    private static Safety generateRandomSafety(Random random) {
-        boolean hasAirbags = random.nextBoolean();
         boolean hasABS = random.nextBoolean();
-        return new Safety(hasAirbags, hasABS);
+        boolean hasADAS = random.nextBoolean();
+//        return new Specifications(numberOfSeats, warrantyYears, engineHP, variant, hasADAS, hasABS, numberOfAirbags);
+        return new Specifications();
     }
 
     private static String generateRandomEngineHP(Random random) {

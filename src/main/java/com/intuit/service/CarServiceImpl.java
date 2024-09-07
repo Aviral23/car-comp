@@ -13,7 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +34,7 @@ public class CarServiceImpl implements CarService {
         this.requestValidator = requestValidator;
     }
 
-    public List<CarResponse> getCarsByTypeAndPrice(String type, Double price) {
+    public List<CarResponse> getCarsByTypeAndPrice(String type, BigDecimal price) {
         Sort sort = Sort.by(Sort.Direction.DESC, "price");
         Pageable pageable = PageRequest.of(0, 11, sort);
 
@@ -53,15 +56,41 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarResponse getCarById(String id) {
+    public CarResponse getCarById(UUID id) {
+        Optional<Car> optionalCar;
         Car car = null;
         List<CarResponse> similarCarResponse = null;
         try {
-            car = carRepository.findById(id);
-            similarCarResponse = carRepository.getTop10SimilarCars(car).stream()
-                    .map(CarResponse::fromCar)
-                    .collect(Collectors.toList());
+            optionalCar = carRepository.findById(id);
+            if (optionalCar.isPresent()) {
+                car = optionalCar.get();
+                similarCarResponse = carRepository.getTop10SimilarCars(car.getId(), car.getMake(), car.getType(), car.getPrice()).stream()
+                        .map(CarResponse::fromCar)
+                        .collect(Collectors.toList());
+            } else throw new ValidationException("Invalid");
+//            requestValidator.validateIfCarsExist(car);//TODO
+        } catch (ValidationException v) {
+            LOGGER.error("No car found for the given id: {}", v.getMessage());
+            throw v;
+        }
+        CarResponse carResponse = CarResponse.fromCar(car);
+        carResponse.setSimilarCars(similarCarResponse);
+        return carResponse;
+    }
 
+    @Override
+    public CarResponse getCarByName(String name) {
+        Optional<Car> optionalCar;
+        Car car = null;
+        List<CarResponse> similarCarResponse = null;
+        try {
+            optionalCar = carRepository.findByName(name);
+            if (optionalCar.isPresent()) {
+                car = optionalCar.get();
+                similarCarResponse = carRepository.getTop10SimilarCars(car.getId(), car.getMake(), car.getType(), car.getPrice()).stream()
+                        .map(CarResponse::fromCar)
+                        .collect(Collectors.toList());
+            } else throw new ValidationException("Invalid");
 //            requestValidator.validateIfCarsExist(car);//TODO
         } catch (ValidationException v) {
             LOGGER.error("No car found for the given id: {}", v.getMessage());

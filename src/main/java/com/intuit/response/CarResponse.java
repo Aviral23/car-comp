@@ -8,12 +8,14 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
 public class CarResponse implements Serializable {
-    private String id;
+    private UUID id;
     private String make;
     private String model;
     private int year;
@@ -23,7 +25,7 @@ public class CarResponse implements Serializable {
     private String variant;
     private Feature features;
     private Specifications specifications;
-    private double price;
+    private BigDecimal price;
     private String type;
     private List<CarResponse> similarCars;
 

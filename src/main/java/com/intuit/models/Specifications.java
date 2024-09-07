@@ -7,20 +7,24 @@ import java.io.Serializable;
 @Data
 public class Specifications implements Serializable {
     private int numberOfSeats;
-    private Safety safety;
     private int warrantyYears;
     private String engineHP;
-    private String variant;
+    private EngineVariant engineVariant;
+    private Boolean hasADAS;
+    private Boolean hasABS;
+    private Integer numberOfAirbags;
 
     public Specifications() {
     }
 
-    public Specifications(int numberOfSeats, Safety safety, int warrantyYears, String engineHP, String variant) {
+    public Specifications(int numberOfSeats, int warrantyYears, String engineHP, EngineVariant variant, Boolean hasADAS, Boolean hasABS, Integer numberOfAirbags) {
         this.numberOfSeats = numberOfSeats;
-        this.safety = safety;
         this.warrantyYears = warrantyYears;
         this.engineHP = engineHP;
-        this.variant = variant;
+        this.engineVariant = variant;
+        this.hasADAS = hasADAS;
+        this.hasABS = hasABS;
+        this.numberOfAirbags = numberOfAirbags;
     }
 }
 

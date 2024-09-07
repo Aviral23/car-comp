@@ -6,27 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class CarRepositoryImpl implements CarRepository{
+public class CarRepositoryImpl{
 
     @Autowired
     CarConfiguration carConfiguration;
-    @Override
-    public List<Car> findTop10ByTypeAndPriceLessThanEqualOrderByPriceDesc(String type, Double price, Pageable pageable) {
+    public List<Car> findTop10ByTypeAndPriceLessThanEqualOrderByPriceDesc(String type, BigDecimal price, Pageable pageable) {
         if(price == null)
-            price = Double.MAX_VALUE;
-        Double finalPrice = price;
-        return carConfiguration.carHashMap().values().stream()
+            price = BigDecimal.valueOf(Double.MAX_VALUE);
+        BigDecimal finalPrice = price;
+        /*return carConfiguration.carHashMap().values().stream()
                 .filter(car -> car.getType().equals(type) && car.getPrice() <= finalPrice)
                 .sorted(Comparator.comparingDouble(Car::getPrice).reversed())
                 .limit(10)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        return null;
     }
 
-    @Override
     public List<Car> getTop10SimilarCars(Car car) {
         Map<String, Car> carMap = carConfiguration.carHashMap();
         PriorityQueue<Car> pq = new PriorityQueue<>(10,
@@ -45,7 +45,7 @@ public class CarRepositoryImpl implements CarRepository{
     public static double manhattanDistance(Car car1, Car car2) {
         double distance = 0.0;
         distance += Math.abs(car1.getManufactureYear() - car2.getManufactureYear());
-        distance += Math.abs(car1.getPrice() - car2.getPrice());
+//        distance += car1.getPrice().subtract(car2.getPrice());
         if (!car1.getMake().equals(car2.getMake())) {
             distance += 1.0;
         }
@@ -58,10 +58,9 @@ public class CarRepositoryImpl implements CarRepository{
         if (!car1.getType().equals(car2.getType())) {
             distance += 1.0;
         }
-        return distance;
+        return Double.parseDouble("1");
     }
 
-    @Override
     public Car findById(String id) {
         return carConfiguration.carHashMap().get(id);
     }

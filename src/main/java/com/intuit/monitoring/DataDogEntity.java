@@ -7,8 +7,6 @@ import lombok.Data;
 public class DataDogEntity {
     String requestApi;
     long elapsedTime;
-
     Integer httpStatus;
-
     String requestType;
 }
