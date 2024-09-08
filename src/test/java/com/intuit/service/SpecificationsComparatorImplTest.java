@@ -1,7 +1,7 @@
 package com.intuit.service;
 
 import com.intuit.models.EngineVariant;
-import com.intuit.models.Specifications;
+import com.intuit.models.Specification;
 import com.intuit.response.ComparisonResponse;
 import com.intuit.response.FeatureResponse;
 import com.intuit.utils.Constants;
@@ -18,10 +18,10 @@ import org.junit.jupiter.api.Assertions;
 
 @SpringBootTest
 public class SpecificationsComparatorImplTest {
-    private Specifications spec1;
-    private Specifications spec2;
-    private Specifications currCar;
-    private List<Specifications> specsList;
+    private Specification spec1;
+    private Specification spec2;
+    private Specification currCar;
+    private List<Specification> specsList;
     @InjectMocks
     private SpecificationsComparatorImpl specificationsComparator;
     @Mock
@@ -32,7 +32,7 @@ public class SpecificationsComparatorImplTest {
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        currCar = new Specifications();
+        currCar = new Specification();
         currCar.setNumberOfSeats(7);
         currCar.setWarrantyYears(5);
         currCar.setEngineHP("1502");
@@ -41,7 +41,7 @@ public class SpecificationsComparatorImplTest {
         currCar.setHasABS(true);
         currCar.setNumberOfAirbags(4);
 
-        spec1 = new Specifications();
+        spec1 = new Specification();
         spec1.setNumberOfSeats(5);
         spec1.setWarrantyYears(3);
         spec1.setEngineHP("150");
@@ -50,7 +50,7 @@ public class SpecificationsComparatorImplTest {
         spec1.setHasABS(true);
         spec1.setNumberOfAirbags(4);
 
-        spec2 = new Specifications();
+        spec2 = new Specification();
         spec2.setNumberOfSeats(7);
         spec2.setWarrantyYears(5);
         spec2.setEngineHP("180");

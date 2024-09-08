@@ -1,6 +1,8 @@
 package com.intuit.repository;
 
+import com.intuit.dao.CarDAO;
 import com.intuit.models.Car;
+import com.intuit.models.Feature;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,20 +13,20 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, UUID> {
+public interface CarRepository extends JpaRepository<Car, Long> {
+
     @Query("SELECT c FROM Car c WHERE c.type = :type AND c.price <= :price ORDER BY c.price DESC")
     List<Car> findTop10ByTypeAndPriceLessThanEqualOrderByPriceDesc(@Param("type") String type, @Param("price") BigDecimal price, Pageable pageable);
 
-    Optional<Car> findById(@Param("id") UUID id);
+    Optional<Car> findById(@Param("id") Long id);
 
     @Query("SELECT c FROM Car c WHERE c.id != :currentCarId " +
             "ORDER BY CASE WHEN c.make = :currentCarMake THEN 0 ELSE 1 END, " +
             "CASE WHEN c.type = :currentCarType THEN 0 ELSE 1 END, " +
-            "ABS(c.price - :currentCarPrice) ASC LIMIT 10")
-    List<Car> getTop10SimilarCars(@Param("currentCarId") UUID currentCarId,
+            "ABS(c.price - :currentCarPrice) ASC")
+    List<Car> getTop10SimilarCars(@Param("currentCarId") Long currentCarId,
                                   @Param("currentCarMake") String currentCarMake,
                                   @Param("currentCarType") String currentCarType,
                                   @Param("currentCarPrice") BigDecimal currentCarPrice);
@@ -32,5 +34,11 @@ public interface CarRepository extends JpaRepository<Car, UUID> {
 
     @Query("SELECT c FROM Car c WHERE LOWER(c.name) LIKE CONCAT('%', LOWER(:name), '%')")
     Optional<Car> findByName(@Param("name") String name);
+
+    @Query(value="Select f.id, f.has_bluetooth, f.has_navigation, f.has_rear_camera, f.gear_transmission from feature f where f.id IN (Select c.feature_id from car c where c.id IN :idList)", nativeQuery = true)
+    List<Object[]> findFeature(@Param("idList") List<Long> idList);
+
+    @Query(value="Select s.id, s.engine_HP, s.has_abs, s.has_adas, s.number_of_airbags, s.number_of_seats, s.warranty_years, s.engine_variant from specification s where s.id IN (Select c.specification_id from car c where c.id IN :idList)", nativeQuery = true)
+    List<Object[]> findSpecs(@Param("idList") List<Long> idList);
 }
 

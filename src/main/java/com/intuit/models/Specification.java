@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class Specifications implements Serializable {
+public class Specification implements Serializable {
     private int numberOfSeats;
     private int warrantyYears;
     private String engineHP;
@@ -14,10 +14,10 @@ public class Specifications implements Serializable {
     private Boolean hasABS;
     private Integer numberOfAirbags;
 
-    public Specifications() {
+    public Specification() {
     }
 
-    public Specifications(int numberOfSeats, int warrantyYears, String engineHP, EngineVariant variant, Boolean hasADAS, Boolean hasABS, Integer numberOfAirbags) {
+    public Specification(int numberOfSeats, int warrantyYears, String engineHP, EngineVariant variant, Boolean hasADAS, Boolean hasABS, Integer numberOfAirbags) {
         this.numberOfSeats = numberOfSeats;
         this.warrantyYears = warrantyYears;
         this.engineHP = engineHP;

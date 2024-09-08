@@ -1,3 +1,5 @@
 com/intuit/CarApplicationTests.class
+com/intuit/service/SpecificationsComparatorImplTest.class
+com/intuit/service/FeatureComparatorImplTest.class
 com/intuit/service/ComparisonLogicImplTest.class
-com/intuit/controller/ControllerTest.class
+com/intuit/controller/CarControllerTest.class

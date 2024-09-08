@@ -1,11 +1,11 @@
 # Car Comparison System
 
-The Car Comparison System is a Spring Boot-based application that allows users to compare different car features and specifications.
+The Car Comparison System is a Spring Boot-based application that allows users to compare different car features and specification.
 
 ## Features
 
 - **Comparison of Car Features:** Compare various features of cars such as engines, transmissions, dimensions, etc.
-- **Specifications Comparison:** Compare specifications like seats, materials, dimensions, etc.
+- **Specifications Comparison:** Compare specification like seats, materials, dimensions, etc.
 - **Validation:** Validate car comparison requests to ensure accurate comparisons.
 - **Exception Handling:** Handle various exceptions that may occur during the comparison process.
 

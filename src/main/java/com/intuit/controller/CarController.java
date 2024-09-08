@@ -6,6 +6,7 @@ import com.intuit.response.CarResponse;
 import com.intuit.response.ComparisonList;
 import com.intuit.service.CarService;
 import com.intuit.service.ComparisonLogic;
+import datadog.trace.api.Trace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+//import datadog.trace.api.DDTags;
+//import datadog.trace.api.Trace;
 
 @RestController
 @RequestMapping(value = "/car/v1")
@@ -32,9 +35,11 @@ public class CarController {
 
     @ResponseBody
     @GetMapping(value = "/type-and-price", produces = "application/json")
+    @Trace(operationName = "findbytypeprice.request")
     public ResponseEntity<List<CarResponse>> getCarsByTypeAndPrice(
             @RequestParam Map<String, String> params
     ) {
+        LOGGER.info("Got params: cars by type '{}' and price '{}'", params.get("type"), params.get("price"));
         List<CarResponse> cars = carService.getCarsByTypeAndPrice(params.get("type"), new BigDecimal(params.get("price")));
         LOGGER.info("Retrieved cars by type '{}' and price '{}'", params.get("type"), params.get("price"));
         return new ResponseEntity<>(cars, HttpStatus.OK);
@@ -43,9 +48,11 @@ public class CarController {
 
     @ResponseBody
     @GetMapping(value = "/id", produces = "application/json")
+    @Trace(operationName = "findbyid.request")
     public ResponseEntity<CarResponse> getCarById(
-            @RequestParam UUID id
+            @RequestParam Long id
     ) {
+        LOGGER.info("Request to get car by id '{}'", id);
         CarResponse car = carService.getCarById(id);
         LOGGER.info("Retrieved car by id '{}'", id);
         return new ResponseEntity<>(car, HttpStatus.OK);
@@ -53,6 +60,7 @@ public class CarController {
 
     @ResponseBody
     @GetMapping(value = "/name", produces = "application/json")
+    @Trace(operationName = "findbyname.request")
     public ResponseEntity<CarResponse> getCarByName(
             @RequestParam String name
     ) {
@@ -63,6 +71,7 @@ public class CarController {
 
     @ResponseBody
     @PostMapping(value = "/compare", produces = "application/json")
+    @Trace(operationName = "compare.request")
     public ResponseEntity<ComparisonList> selectCarsForComparison(
             @RequestBody CompareRequest compareRequest
     ) throws JsonProcessingException {

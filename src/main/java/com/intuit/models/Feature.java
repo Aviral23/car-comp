@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Data
 public class Feature implements Serializable {
+    private Integer id;
     private Boolean hasNavigation;
     private Boolean hasBluetooth;
     private Boolean hasRearCamera;
@@ -22,6 +23,14 @@ public class Feature implements Serializable {
         this.hasRearCamera = hasRearCamera;
         this.gearTransmission = gearTransmission;
         this.dimension = dimension;
+    }
+
+    public Feature(Integer id, Boolean hasNavigation, Boolean hasBluetooth, Boolean hasRearCamera, GearTransmission gearTransmission) {
+        this.id = id;
+        this.hasNavigation = hasNavigation;
+        this.hasBluetooth = hasBluetooth;
+        this.hasRearCamera = hasRearCamera;
+        this.gearTransmission = gearTransmission;
     }
 }
 

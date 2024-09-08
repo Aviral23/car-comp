@@ -11,6 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompareRequest {
-    UUID presentCarId;
-    List<UUID> idList;
+    Long presentCarId;
+    List<Long> idList;
 }

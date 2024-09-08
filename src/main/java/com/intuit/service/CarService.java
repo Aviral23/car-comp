@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface CarService {
     List<CarResponse> getCarsByTypeAndPrice(String type, BigDecimal price);
-    CarResponse getCarById(UUID id);
+    CarResponse getCarById(Long id);
     CarResponse getCarByName(String name);
 }
 

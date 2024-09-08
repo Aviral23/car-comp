@@ -9,25 +9,29 @@ import com.intuit.response.ComparisonList;
 import com.intuit.service.CarService;
 import com.intuit.service.ComparisonLogic;
 import com.intuit.service.RedisService;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class ControllerTest {
+@SpringBootTest
+public class CarControllerTest {
 
     @Mock
     private CarService carService;
@@ -41,29 +45,36 @@ public class ControllerTest {
     @InjectMocks
     private CarController controller;
 
-
+    @Before
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
     @Test
     public void testGetCarsByTypeAndPrice() {
         List<CarResponse> mockedCars = new ArrayList<>();
-        when(carService.getCarsByTypeAndPrice(anyString(), anyDouble())).thenReturn(mockedCars);
-        ResponseEntity<List<CarResponse>> response = controller.getCarsByTypeAndPrice("SUV", 25000.0);
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "SUV");
+        params.put("price", "25000");
+        when(carService.getCarsByTypeAndPrice(anyString(), any(BigDecimal.class))).thenReturn(mockedCars);
+        ResponseEntity<List<CarResponse>> response = controller.getCarsByTypeAndPrice(params);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockedCars, response.getBody());
-        Mockito.verify(carService, Mockito.times(1)).getCarsByTypeAndPrice(Mockito.anyString(), Mockito.anyDouble());
-        Mockito.verifyZeroInteractions(carService);
-
+        Mockito.verify(carService, Mockito.times(1)).getCarsByTypeAndPrice(Mockito.anyString(), Mockito.any(BigDecimal.class));
     }
 
     @Test
     public void testGetCarsByTypeAndPriceWhenDataDoesNotExist() {
-        when(carService.getCarsByTypeAndPrice(anyString(), anyDouble())).thenReturn(null);
-        ResponseEntity<List<CarResponse>> response = controller.getCarsByTypeAndPrice("", 0.0);
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "");
+        params.put("price", "0.0");
+        when(carService.getCarsByTypeAndPrice(anyString(), any(BigDecimal.class))).thenReturn(null);
+        ResponseEntity<List<CarResponse>> response = controller.getCarsByTypeAndPrice(params);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNull(response.getBody());
 
-        Mockito.verify(carService, Mockito.times(1)).getCarsByTypeAndPrice(Mockito.anyString(), Mockito.anyDouble());
+        Mockito.verify(carService, Mockito.times(1)).getCarsByTypeAndPrice(Mockito.anyString(), Mockito.any(BigDecimal.class));
         Mockito.verifyNoMoreInteractions(carService);
 
     }
@@ -71,19 +82,19 @@ public class ControllerTest {
     @Test
     public void testSelectCarsForComparison() throws JsonProcessingException {
         ComparisonList mockedComparisonList = new ComparisonList();
-        when(comparisonLogic.compare(any(CompareRequest.class))).thenReturn(mockedComparisonList);
+        when(comparisonLogic.compareCars(any(CompareRequest.class))).thenReturn(mockedComparisonList);
         ResponseEntity<ComparisonList> response = controller.selectCarsForComparison(new CompareRequest());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockedComparisonList, response.getBody());
-        Mockito.verify(comparisonLogic, Mockito.times(1)).compare(Mockito.any());
+        Mockito.verify(comparisonLogic, Mockito.times(1)).compareCars(Mockito.any());
         Mockito.verifyNoMoreInteractions(comparisonLogic);
 
     }
 
     @Test(expected = ValidationException.class)
     public void testSelectCarsForComparisonWhenCorrectRequestIsNotSend() throws JsonProcessingException {
-        when(comparisonLogic.compare(any(CompareRequest.class))).thenThrow(ValidationException.class);
+        when(comparisonLogic.compareCars(any(CompareRequest.class))).thenThrow(ValidationException.class);
         controller.selectCarsForComparison(new CompareRequest());
     }
 

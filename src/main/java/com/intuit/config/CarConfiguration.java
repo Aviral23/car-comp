@@ -4,7 +4,6 @@ import com.intuit.models.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -72,7 +71,7 @@ public class CarConfiguration {
     }
 
     private static GearTransmission generateRandomTransmission(Random random) {
-        return random.nextBoolean() ? GearTransmission.AUTO : GearTransmission.MANUAL;
+        return random.nextBoolean() ? GearTransmission.AUTOMATIC : GearTransmission.MANUAL;
     }
 
     private static Dimension generateRandomDimension(Random random) {
@@ -82,7 +81,7 @@ public class CarConfiguration {
         return new Dimension(length, width, height);
     }
 
-    private static Specifications generateRandomSpec(Random random) {
+    private static Specification generateRandomSpec(Random random) {
         int numberOfSeats = random.nextInt(7) + 2; // generate a random number of seats between 2 and 8
         int warrantyYears = 2 + random.nextInt(4); // generate a random warranty period between 2 and 5 years
         int numberOfAirbags = random.nextInt(5);
@@ -91,7 +90,7 @@ public class CarConfiguration {
         boolean hasABS = random.nextBoolean();
         boolean hasADAS = random.nextBoolean();
 //        return new Specifications(numberOfSeats, warrantyYears, engineHP, variant, hasADAS, hasABS, numberOfAirbags);
-        return new Specifications();
+        return new Specification();
     }
 
     private static String generateRandomEngineHP(Random random) {
