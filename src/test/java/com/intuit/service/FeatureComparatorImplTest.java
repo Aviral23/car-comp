@@ -34,7 +34,7 @@ public class FeatureComparatorImplTest {
             MockitoAnnotations.openMocks(this);
             currCarFeat = new Feature();
             currCarFeat.setHasBluetooth(true);
-            currCarFeat.setGearTransmission(GearTransmission.AUTO);
+            currCarFeat.setGearTransmission(GearTransmission.AUTOMATIC);
             currCarFeat.setHasNavigation(true);
             currCarFeat.setHasRearCamera(true);
 
@@ -46,7 +46,7 @@ public class FeatureComparatorImplTest {
 
             feat2 = new Feature();
             feat2.setHasBluetooth(false);
-            feat2.setGearTransmission(GearTransmission.AUTO);
+            feat2.setGearTransmission(GearTransmission.AUTOMATIC);
             feat2.setHasNavigation(true);
             feat2.setHasRearCamera(false);
 
