@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComparatorUtils {
-    public static <T> List<T> getAllValuesForType(T type, List<T> valueLists) {
-        List<T> allValues = new ArrayList<>();
+    public static List<String> getAllValuesForType(String type, List<String> valueLists) {
+        List<String> allValues = new ArrayList<>();
         allValues.add(type);
         allValues.addAll(valueLists);
         return allValues;

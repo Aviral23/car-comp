@@ -34,6 +34,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseEntity<String> handleException(Exception ex) {
         LOGGER.error("Unexpected error occurred: {}", ex.getMessage());
-        return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("An unexpected error occurred while returning response", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

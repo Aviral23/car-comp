@@ -1,39 +1,41 @@
 package com.intuit.models;
 
+import javax.persistence.*;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
+@Entity
 @Data
 public class Car implements Serializable {
     @Id
-    private String id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     private String make;
     private String model;
     private String name;
     private int manufactureYear;
     private String color;
-    private Feature features;
-    private Specifications specifications;
+    @Transient
+    private Feature feature;
+    @Transient
+    private Specification specification;
+    @OneToMany(targetEntity=Image.class, fetch= FetchType.LAZY)
     private List<Image> images;
-    private double price;
+    @Column(nullable = false)
+    private BigDecimal price;
+    @Column(nullable = false)
     private String type;
-
-    public Car(String id, String make, String model, int manufactureYear, String color, Feature features, Specifications specifications, List<Image> images, double price, String type) {
-        this.id = id;
-        this.make = make;
-        this.model = model;
-        this.manufactureYear = manufactureYear;
-        this.color = color;
-        this.features = features;
-        this.specifications = specifications;
-        this.images = images;
-        this.price = price;
-        this.type = type;
-        this.name = this.getMake()+ " "+ this.getModel();
-    }
+    private String carVariant;
+    @Column(nullable = false)
+    private Integer featureId;
+    @Column(nullable = false)
+    private Integer specificationId;
 
     public void setName(String name) {
         this.name = this.getMake()+this.getModel();
@@ -41,5 +43,19 @@ public class Car implements Serializable {
 
     public Car() {
 
+    }
+
+    public Car(String make, String model, String name, int manufactureYear, String color, Feature feature, Specification specification, List<Image> images, BigDecimal price, String type, String carVariant) {
+        this.make = make;
+        this.model = model;
+        this.name = name;
+        this.manufactureYear = manufactureYear;
+        this.color = color;
+        this.feature = feature;
+        this.specification = specification;
+        this.images = images;
+        this.price = price;
+        this.type = type;
+        this.carVariant = carVariant;
     }
 }

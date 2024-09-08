@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class RedisService {
 
@@ -20,12 +22,12 @@ public class RedisService {
         this.redisTemplate = redisTemplate;
     }
 
-    public void getCachedCar(String id) {
+    public Car getCachedCar(Long id) {
         String cacheKey = CAR_KEY_PREFIX + id;
-        redisTemplate.opsForValue().get(cacheKey);
+        return redisTemplate.opsForValue().get(cacheKey);
     }
 
-    public void putCarToCache(String id, Car car) {
+    public void putCarToCache(Long id, Car car) {
         String cacheKey = CAR_KEY_PREFIX + id;
         redisTemplate.opsForValue().set(cacheKey, car);
     }

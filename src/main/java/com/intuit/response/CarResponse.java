@@ -2,28 +2,27 @@ package com.intuit.response;
 
 import com.intuit.models.Car;
 import com.intuit.models.Feature;
-import com.intuit.models.Specifications;
+import com.intuit.models.Specification;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
 @Builder
 public class CarResponse implements Serializable {
-    private String id;
+    private Long id;
     private String make;
     private String model;
+    private String name;
     private int year;
     private String color;
-    private double fuelLevel;
-    private boolean isEngineOn;
     private String variant;
     private Feature features;
-    private Specifications specifications;
-    private double price;
+    private Specification specifications;
+    private BigDecimal price;
     private String type;
     private List<CarResponse> similarCars;
 
@@ -34,8 +33,8 @@ public class CarResponse implements Serializable {
                 .model(car.getModel())
                 .year(car.getManufactureYear())
                 .color(car.getColor())
-                .features(car.getFeatures())
-                .specifications(car.getSpecifications())
+                .features(car.getFeature())
+                .specifications(car.getSpecification())
                 .price(car.getPrice())
                 .type(car.getType())
                 .build();

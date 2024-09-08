@@ -7,6 +7,7 @@ import com.intuit.utils.Constants;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,42 +17,45 @@ import static com.intuit.service.ComparatorUtils.isCommonType;
 @Service
 public class FeatureComparatorImpl implements FeatureComparator {
 
+    private ComparisonResponse comparisonResponse;
     @Override
     public ComparisonResponse compareFeatures(Feature features, List<Feature> featuresOfOthers) {
-        ComparisonResponse comparisonResponse = new ComparisonResponse();
+        comparisonResponse = new ComparisonResponse();
         comparisonResponse.setGroupName(Constants.FEATURES);
-        List<Boolean> bluetoothList = featuresOfOthers.stream()
-                .map(Feature::getHasBluetooth)
+        List<String> bluetoothList = featuresOfOthers.stream()
+                .map(s -> String.valueOf(s.getHasBluetooth()))
                 .collect(Collectors.toList());
 
-        compareFeatures(Constants.HAS_BLUETOOTH, features.getHasBluetooth(), bluetoothList, comparisonResponse);
+        compareFeatures(Constants.HAS_BLUETOOTH, String.valueOf(features.getHasBluetooth()), bluetoothList);
 
-        List<Boolean> navigationList = featuresOfOthers.stream()
-                .map(Feature::getHasNavigation)
+        List<String> navigationList = featuresOfOthers.stream()
+                .map(s -> String.valueOf(s.getHasNavigation()))
                 .collect(Collectors.toList());
-        compareFeatures(Constants.HAS_NAVIGATION, features.getHasNavigation(), navigationList, comparisonResponse);
+        compareFeatures(Constants.HAS_NAVIGATION, String.valueOf(features.getHasNavigation()), navigationList);
 
-        List<Boolean> rearCameraList = featuresOfOthers.stream()
-                .map(Feature::getHasRearCamera)
+        List<String> rearCameraList = featuresOfOthers.stream()
+                .map(s -> String.valueOf(s.getHasRearCamera()))
                 .collect(Collectors.toList());
-        compareFeatures(Constants.HAS_REAR_CAMERA, features.getHasRearCamera(), rearCameraList, comparisonResponse);
+        compareFeatures(Constants.HAS_REAR_CAMERA, String.valueOf(features.getHasRearCamera()), rearCameraList);
         return comparisonResponse;
     }
 
-    private void compareFeatures(String featureName, Boolean hasFeature, List<Boolean> hasFeatureList, ComparisonResponse comparisonResponse) {
+    private void compareFeatures(String featureName, String hasFeature, List<String> hasFeatureList) {
         List<FeatureResponse> featureResponses = new ArrayList<>();
         compareAndAddFeature(featureName, hasFeature, hasFeatureList, featureResponses);
+        if(comparisonResponse.getFeature() != null)
+            featureResponses.addAll(comparisonResponse.getFeature());
         comparisonResponse.setFeature(featureResponses);
     }
 
-    private void compareAndAddFeature(String featureName, Boolean value, List<Boolean> hasFeatureList, List<FeatureResponse> featureResponses) {
+    private void compareAndAddFeature(String featureName, String value, List<String> hasFeatureList, List<FeatureResponse> featureResponses) {
 
         boolean isCommonValue = isCommonType(value, hasFeatureList);
 
         featureResponses.add(FeatureResponse.builder()
                 .name(featureName)
                 .values(getAllValuesForType(value, hasFeatureList))
-                .isCommonValue(isCommonValue)
+                .isSimilarity(isCommonValue)
                 .build());
     }
 

@@ -3,25 +3,29 @@ package com.intuit.service;
 import com.intuit.exception.ValidationException;
 import com.intuit.models.Car;
 import com.intuit.models.Feature;
-import com.intuit.models.Specifications;
+import com.intuit.models.Specification;
 import com.intuit.repository.CarRepository;
 import com.intuit.request.CompareRequest;
 import com.intuit.response.ComparisonList;
 import com.intuit.validator.RequestValidator;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class ComparisonLogicImplTest {
 
     @Mock
@@ -39,31 +43,37 @@ public class ComparisonLogicImplTest {
     @Mock
     private RequestValidator requestValidator;
 
+    @Mock
+    private RedisService redisService;
+
     @InjectMocks
     private ComparisonLogicImpl carComparisonLogic;
 
-
+    @Before
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
     @Test
     public void testCompareCarsSuccess() throws Exception {
 
 
-        Car car1 = buildCar("id1",new Feature(),new Specifications());
-        Car car2 = buildCar("id2",new Feature(),new Specifications());
-        Car car3 = buildCar("id3",new Feature(),new Specifications());
+        Car car1 = buildCar(10L,new Feature(),new Specification());
+        Car car2 = buildCar(11L,new Feature(),new Specification());
+        Car car3 = buildCar(12L,new Feature(),new Specification());
 
         CompareRequest compareRequest = new CompareRequest();
-        compareRequest.setViewingCarId("id1");
-        compareRequest.setIdList(Arrays.asList("id3","id2"));
+        compareRequest.setPresentCarId(10L);
+        compareRequest.setIdList(Arrays.asList(11L, 12L));
 
-        Mockito.when(carRepository.findById("id1")).thenReturn(car1);
-        Mockito.when(carRepository.findById("id2")).thenReturn(car2);
-        Mockito.when(carRepository.findById("id3")).thenReturn(car3);
+        when(carRepository.findById(anyLong())).thenReturn(Optional.of(car1));
+        Mockito.when(carRepository.findById(anyLong())).thenReturn(Optional.of(car2));
+        Mockito.when(carRepository.findById(anyLong())).thenReturn(Optional.of(car3));
 
-        ComparisonList comparisonList = carComparisonLogic.compare(compareRequest);
+        ComparisonList comparisonList = carComparisonLogic.compareCars(compareRequest);
 
         assertNotNull(comparisonList);
         verify(requestValidator, times(1)).validateCompareRequest(compareRequest);
-        verify(carRepository, times(3)).findById(anyString());
+        verify(carRepository, times(3)).findById(anyLong());
         verify(specificationsComparator, times(1)).compareSpecifications(any(), any());
 
         verifyNoMoreInteractions(requestValidator);
@@ -74,13 +84,13 @@ public class ComparisonLogicImplTest {
     @Test
     public void testCompareCarsWhenCarNotFound() {
         CompareRequest compareRequest = new CompareRequest();
-        compareRequest.setViewingCarId("id1");
-        compareRequest.setIdList(Arrays.asList("id3","id2"));
-        when(carRepository.findById(anyString())).thenReturn(any(Car.class));
+        compareRequest.setPresentCarId(10L);
+        compareRequest.setIdList(Arrays.asList(11L, 12L));
+        when(carRepository.findById(anyLong())).thenReturn(any());
 
-        assertThrows(ValidationException.class, () -> carComparisonLogic.compare(compareRequest));
+        assertThrows(ValidationException.class, () -> carComparisonLogic.compareCars(compareRequest));
         verify(requestValidator, times(1)).validateCompareRequest(compareRequest);
-        verify(carRepository, times(1)).findById(anyString());
+        verify(carRepository, times(1)).findById(anyLong());
         verifyNoInteractions(comparatorUtils);
         verifyNoInteractions(specificationsComparator);
     }
@@ -88,21 +98,21 @@ public class ComparisonLogicImplTest {
     @Test
     public void testCompareCarsWhenMoreThanTwoCarsNotFound() {
         CompareRequest compareRequest = new CompareRequest();
-        compareRequest.setViewingCarId("id1");
-        compareRequest.setIdList(Arrays.asList("id3","id2","id4"));
+        compareRequest.setPresentCarId(10L);
+        compareRequest.setIdList(Arrays.asList(11L,12L,13L));
 
-        assertThrows(ValidationException.class, () -> carComparisonLogic.compare(compareRequest));
+        assertThrows(ValidationException.class, () -> carComparisonLogic.compareCars(compareRequest));
         verify(requestValidator, times(1)).validateCompareRequest(compareRequest);
-        verify(carRepository, times(1)).findById(anyString());
+        verify(carRepository, times(1)).findById(anyLong());
         verifyNoInteractions(comparatorUtils);
         verifyNoInteractions(specificationsComparator);
     }
 
-    private Car buildCar(String id, Feature feature, Specifications specifications) {
+    private Car buildCar(Long id, Feature feature, Specification specification) {
         Car car = new Car();
-        car.setSpecifications(specifications);
+        car.setSpecification(specification);
         car.setId(id);
-        car.setFeatures(feature);
+        car.setFeature(feature);
         return car;
     }
 

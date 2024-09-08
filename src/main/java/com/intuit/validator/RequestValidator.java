@@ -11,12 +11,12 @@ import java.util.List;
 public class RequestValidator {
     public void validateCompareRequest(CompareRequest compareRequest) {
         if(compareRequest == null) {
-            throw new ValidationException("id list is Null");
+            throw new ValidationException("id list is empty");
         } else if (compareRequest.getIdList().size() > 2) {
-            throw new ValidationException("id List greater/lesser than required");
+            throw new ValidationException("id list has size greater/lesser than required");
         }
-        else if (compareRequest.getIdList().contains(compareRequest.getViewingCarId())) {
-            throw new ValidationException("viewing car id and comparison id same ");
+        else if (compareRequest.getIdList().contains(compareRequest.getPresentCarId())) {
+            throw new ValidationException("present car id and comparison id is same ");
         }
 
     }
