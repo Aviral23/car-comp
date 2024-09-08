@@ -1,0 +1,44 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Mac
+.DS_Store
+
+# ms vscode
+.vscode/
+
+# Maven
+/log/
+target/
+
+# Spring
+/logs/
+/bin/
+
+# OIL
+OILLogs/
+app/tomcat/logs
+app/logs
+app/bin
+/conf/
+
+# Python
+*.pyc
+.factorypath
+.springBeans
+.apt_generated
+*.pem
+/*.exec
+*.pem
+/jacoco.exec
+*jacoco.exec
+test-output/
+tomcat/
