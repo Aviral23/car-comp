@@ -6,7 +6,6 @@
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/service/SpecificationsComparatorImpl.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/service/FeatureComparatorImpl.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/filter/RequestLoggingFilter.java
-/Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/models/Specifications.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/service/CarServiceImpl.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/models/GearTransmission.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/monitoring/DataDogExceptionEntity.java
@@ -20,14 +19,16 @@
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/service/FeatureComparator.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/validator/RequestValidator.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/config/CarConfiguration.java
+/Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/models/Specification.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/models/Feature.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/exception/GlobalExceptionHandler.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/repository/CarRepository.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/models/Image.java
+/Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/dao/CarDAO.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/response/FeatureResponse.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/request/CompareRequest.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/config/RedisConfig.java
-/Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/repository/CarRepositoryImpl.java
+/Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/models/EngineVariant.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/controller/CarController.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/exception/ValidationException.java
 /Users/autkarsh/Documents/workspace/car-comp/src/main/java/com/intuit/utils/Constants.java

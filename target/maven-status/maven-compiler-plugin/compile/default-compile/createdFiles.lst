@@ -8,6 +8,7 @@ com/intuit/response/CarResponse$CarResponseBuilder.class
 com/intuit/exception/GlobalExceptionHandler.class
 com/intuit/controller/HealthCheckController.class
 com/intuit/config/RedisConfig.class
+com/intuit/models/Specification.class
 com/intuit/service/FeatureComparatorImpl.class
 com/intuit/service/ComparisonLogic.class
 com/intuit/utils/Constants.class
@@ -15,14 +16,12 @@ com/intuit/CarCompareApplication.class
 com/intuit/monitoring/PrometheusMetricPublisher.class
 com/intuit/models/Car.class
 com/intuit/response/ComparisonResponse.class
-com/intuit/models/Specifications.class
 com/intuit/models/Image.class
 com/intuit/repository/CarRepository.class
 com/intuit/validator/RequestValidator.class
 com/intuit/models/GearTransmission.class
 com/intuit/service/RedisService.class
 com/intuit/service/ComparatorUtils.class
-com/intuit/repository/CarRepositoryImpl.class
 com/intuit/service/SpecificationsComparatorImpl.class
 com/intuit/service/CarService.class
 com/intuit/monitoring/DataDogEntity.class
@@ -30,6 +29,7 @@ com/intuit/models/Feature.class
 com/intuit/models/Dimension.class
 com/intuit/models/EngineVariant.class
 com/intuit/response/CarResponse.class
+com/intuit/models/Safety.class
 com/intuit/service/SpecificationsComparator.class
 com/intuit/service/CarServiceImpl.class
 com/intuit/controller/CarController.class
@@ -37,3 +37,4 @@ com/intuit/service/FeatureComparator.class
 com/intuit/request/CompareRequest.class
 com/intuit/response/FeatureResponse.class
 com/intuit/monitoring/DataDogExceptionEntity.class
+com/intuit/dao/CarDAO.class

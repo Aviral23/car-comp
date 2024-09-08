@@ -1,8 +1,6 @@
 package com.intuit.repository;
 
-import com.intuit.dao.CarDAO;
 import com.intuit.models.Car;
-import com.intuit.models.Feature;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
