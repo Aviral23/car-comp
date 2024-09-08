@@ -1,0 +1,37 @@
+name: Maven docker build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  DOCKER_IMAGE_TAG: carcomp-app
+  DOCKERFILE: Dockerfile
+
+jobs:
+
+  build-and-test-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java environment
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Declare some project related variables
+        shell: bash
+        run: |
+            echo "DOCKER_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_ENV"
+
+      - name: Run the Maven verify phase
+        run: mvn --batch-mode --update-snapshots verify -Dmaven.test.skip=true
+
+      - name: Create docker image
+        run:  docker build . --file ${{env.DOCKERFILE}} --tag ${{env.DOCKER_IMAGE_TAG}}:${{env.DOCKER_PROJECT_VERSION}}
