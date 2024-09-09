@@ -15,9 +15,7 @@ import java.util.Optional;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
 
-    @Query("SELECT c FROM Car c WHERE c.type = :type AND c.price <= :price ORDER BY c.price DESC")
-    List<Car> findTop10ByTypeAndPriceLessThanEqualOrderByPriceDesc(@Param("type") String type, @Param("price") BigDecimal price, Pageable pageable);
-
+    List<Car> findTop10ByTypeContainingAndPriceLessThanEqualOrderByPriceDesc(String type, BigDecimal price, Pageable pageable);
     Optional<Car> findById(@Param("id") Long id);
 
     @Query("SELECT c FROM Car c WHERE c.id != :currentCarId " +
@@ -27,11 +25,9 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     List<Car> getTop10SimilarCars(@Param("currentCarId") Long currentCarId,
                                   @Param("currentCarMake") String currentCarMake,
                                   @Param("currentCarType") String currentCarType,
-                                  @Param("currentCarPrice") BigDecimal currentCarPrice);
+                                  @Param("currentCarPrice") BigDecimal currentCarPrice, Pageable pageable);
 
-
-    @Query("SELECT c FROM Car c WHERE LOWER(c.name) LIKE CONCAT('%', LOWER(:name), '%')")
-    Optional<Car> findByName(@Param("name") String name);
+    List<Car> findTop10ByNameContaining(String name);
 
     @Query(value="Select f.id, f.has_bluetooth, f.has_navigation, f.has_rear_camera, f.gear_transmission from feature f where f.id IN (Select c.feature_id from car c where c.id IN :idList)", nativeQuery = true)
     List<Object[]> findFeature(@Param("idList") List<Long> idList);

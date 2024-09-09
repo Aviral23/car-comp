@@ -40,7 +40,8 @@ public class CarController {
             @RequestParam Map<String, String> params
     ) {
         LOGGER.info("Got params: cars by type '{}' and price '{}'", params.get("type"), params.get("price"));
-        List<CarResponse> cars = carService.getCarsByTypeAndPrice(params.get("type"), new BigDecimal(params.get("price")));
+        List<CarResponse> cars = carService.getCarsByTypeAndPrice(params.get("type") == null ? "": params.get("type"),
+                params.get("price") == null ? BigDecimal.valueOf(Long.MAX_VALUE):new BigDecimal(params.get("price")));
         LOGGER.info("Retrieved cars by type '{}' and price '{}'", params.get("type"), params.get("price"));
         return new ResponseEntity<>(cars, HttpStatus.OK);
 
@@ -61,12 +62,12 @@ public class CarController {
     @ResponseBody
     @GetMapping(value = "/name", produces = "application/json")
     @Trace(operationName = "findbyname.request")
-    public ResponseEntity<CarResponse> getCarByName(
+    public ResponseEntity<List<CarResponse>> getCarByName(
             @RequestParam String name
     ) {
-        CarResponse car = carService.getCarByName(name);
+        List<CarResponse> cars = carService.getCarByName(name);
         LOGGER.info("Retrieved car by name '{}'", name);
-        return new ResponseEntity<>(car, HttpStatus.OK);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
     @ResponseBody

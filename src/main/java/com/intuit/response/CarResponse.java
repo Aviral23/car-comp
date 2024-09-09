@@ -6,6 +6,7 @@ import com.intuit.models.Specification;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 @Data
 @Builder
 public class CarResponse implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6529685098267757690L;
     private Long id;
     private String make;
     private String model;
@@ -24,6 +27,7 @@ public class CarResponse implements Serializable {
     private Specification specifications;
     private BigDecimal price;
     private String type;
+    private String image;
     private List<CarResponse> similarCars;
 
     public static CarResponse fromCar(Car car) {
@@ -37,6 +41,7 @@ public class CarResponse implements Serializable {
                 .specifications(car.getSpecification())
                 .price(car.getPrice())
                 .type(car.getType())
+                .image(null)
                 .build();
     }
 }

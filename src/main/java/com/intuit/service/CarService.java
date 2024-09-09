@@ -9,6 +9,6 @@ import java.util.UUID;
 public interface CarService {
     List<CarResponse> getCarsByTypeAndPrice(String type, BigDecimal price);
     CarResponse getCarById(Long id);
-    CarResponse getCarByName(String name);
+    List<CarResponse> getCarByName(String name);
 }
 

@@ -64,6 +64,18 @@ public class CarControllerTest {
     }
 
     @Test
+    public void testGetCarsByTypeAndPriceWhenNoTypeSpecified() {
+        List<CarResponse> mockedCars = new ArrayList<>();
+        Map<String, String> params = new HashMap<>();
+        params.put("price", "25000");
+        ResponseEntity<List<CarResponse>> response = controller.getCarsByTypeAndPrice(params);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockedCars, response.getBody());
+        Mockito.verify(carService, Mockito.times(1)).getCarsByTypeAndPrice(any(), Mockito.any(BigDecimal.class));
+    }
+
+    @Test
     public void testGetCarsByTypeAndPriceWhenDataDoesNotExist() {
         Map<String, String> params = new HashMap<>();
         params.put("type", "");
