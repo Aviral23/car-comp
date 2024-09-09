@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class Car implements Serializable {
     private Feature feature;
     @Transient
     private Specification specification;
-    @OneToMany(targetEntity=Image.class, fetch= FetchType.LAZY)
+    @OneToMany(targetEntity=Image.class)
     private List<Image> images;
     @Column(nullable = false)
     private BigDecimal price;
@@ -58,4 +59,5 @@ public class Car implements Serializable {
         this.type = type;
         this.carVariant = carVariant;
     }
+
 }

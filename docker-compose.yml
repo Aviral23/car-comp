@@ -5,8 +5,6 @@ services:
     image: mysql
     ports:
       - "3307:3306"
-    volumes:
-      - ./import.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       MYSQL_DATABASE: car
       MYSQL_ROOT_PASSWORD: 1234

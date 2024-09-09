@@ -1,11 +1,14 @@
 package com.intuit.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@AllArgsConstructor
 public class Specification implements Serializable {
+    private int id;
     private int numberOfSeats;
     private int warrantyYears;
     private String engineHP;

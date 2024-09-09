@@ -70,7 +70,7 @@ public class CarConfiguration {
         return new Feature(hasNavigation, hasBluetooth, hasRearCamera, gearTransmission, dimension);
     }
 
-    private static GearTransmission generateRandomTransmission(Random random) {
+    static GearTransmission generateRandomTransmission(Random random) {
         return random.nextBoolean() ? GearTransmission.AUTOMATIC : GearTransmission.MANUAL;
     }
 
