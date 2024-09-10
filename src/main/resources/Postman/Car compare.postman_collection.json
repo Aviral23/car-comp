@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "e5a5175b-e987-4983-a168-82bede75879c",
+		"name": "Car compare",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30452617"
+	},
+	"item": [
+		{
+			"name": "Car By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/car/v1/id/?id=0077",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"car",
+						"v1",
+						"id",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "0077"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car By Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/car/v1/id/?id=0077",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"car",
+						"v1",
+						"id",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "0077"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car By Type & Price",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/car/v1/type-and-price?type=sedan&higherPriceCap=30000&lowerPriceCap=10000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"car",
+						"v1",
+						"type-and-price"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "sedan"
+						},
+						{
+							"key": "higherPriceCap",
+							"value": "30000"
+						},
+						{
+							"key": "lowerPriceCap",
+							"value": "10000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car By Type Only",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/car/v1/type-and-price?type=sedan",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"car",
+						"v1",
+						"type-and-price"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "sedan"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Car By Price Cap Only",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/car/v1/type-and-price?price=50000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"car",
+						"v1",
+						"type-and-price"
+					],
+					"query": [
+						{
+							"key": "price",
+							"value": "50000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Home Page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/car/v1/type-and-price"
+			},
+			"response": []
+		},
+		{
+			"name": "Car Comparison",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"idList\": [\n    \"100\",\"101\"\n  ],\n  \"presentCarId\": \"102\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8080/car/v1/compare"
+			},
+			"response": []
+		},
+		{
+			"name": "Car Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/car/health"
+			},
+			"response": []
+		}
+	]
+}
